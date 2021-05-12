@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+		<meta charset="utf-8"/>
+		 <link rel="stylesheet" href="login_popup.css"/>
+		<link rel="stylesheet" href="navigate-collection.css"/>
+	</head>
+	<body>
+		<script src="/utils/glovebox-basics.js"></script>
+
+		
+
+
+
+
+			<h3>Scan</h3>
+			<form class="scan-tabs">
+				<button class="scan-tabs">scan all tabs</button>
+			</form>
+	
+
+	
+
+					<h3>Private Keys</h3>
+
+					<ul class="privatekeys"></ul>
+
+	<!--	<h4>Generate new private key</h4>-->
+			<form class="generate-private-key" >
+				<button class="generate-private-key">generate private key</button>
+			</form>
+	
+<!--
+		<div id="app">
+			<h3>Stored images</h3>
+			<input placeholder="filter image" class="image-filter"></input>
+			<button class="add">add</button>
+			<button class="reload-images">reload</button>
+			<button class="delete-images">delete</button>
+			<ul class="thumbnails"></ul>
+		</div>
+-->
+		
+		
+					<script src="/deps/idb-key-storage.js"></script>
+					<script src="/deps/uuidv4.js"></script>
+					<script src="/utils/handle-window-drag-and-drop.js"></script>
+					<script src="/utils/image-store.js"></script>
+
+
+					<h3>Encryption keys</h3>
+
+					<ul class="encryptionkeys"></ul>
+
+	<!--		<h4>Generate new encryption key</h4>-->
+			<form class="generate-encryption-key" >
+				<button class="generate-encryption-key">generate enc key</button>
+			</form>
+
+					<h3>Decryption Keys</h3>
+
+					<ul class="decryptionkeys"></ul>
+
+					<h3>Key Offers</h3>
+List of secure key offers made.
+					<ul class="keysecureoffers"></ul>
+
+List of secure key offers accepted.
+					<ul class="acceptedsecurekeyoffers"></ul>
+
+
+		<!--
+
+					<h3>Decryption Keys</h3>default key
+
+
+					<h3>Encryption Keys</h3>
+
+		-->
+<!--
+
+					<div id="2">
+						<h3>Stored keys</h3>
+
+						<button class="reload-images">reload</button>
+						<button class="reload-i">reload2</button>
+						<button class="delete-images">delete</button>
+						<ul class="thumbnails"></ul>
+						<table class="encryptionkeys" id="foo:bar"></table>
+
+						<table class="encryptionkeys2">
+							<tr border="1"><td>col 1</td><td>col 2</td></tr>
+
+
+						</table>
+
+					</div>
+					<button class="add-decryptionkeys" >add-decryptionkeys</button>
+-->
+
+<!-- management actions -->
+
+
+<!-- The user is de facto logged through having his own private signing keys in the local keystore. With these keys present, the user can use the decryption and encryption keys signed by  -->
+
+
+
+	<h3>Log in</h3>
+ The login adds encryption and decryption keys to the browser. The process consists of selection a file containing the keys to add, and the password required to open the file. 
+
+The key database will emptied and any keys present in the database are removed. Use the Import Keys if the key already in the database should be retained. 
+This login operation is equivalent to performing a Flush Keys operation,immediately followed by an Import Keys operation. 
+<br/>
+
+
+<div id="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+  <p>Drag one or more files to this Drop Zone ...</p>
+<form class="my-form">
+    <p>Upload multiple files with the file dialog or by dragging and dropping images onto the dashed region</p>
+    <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+    <label class="button" for="fileElem">Select some files</label>
+  </form>
+</div>
+
+	<br/>
+				<button class="login" id="login2">login2</button>
+				<button class="login">login</button>
+	<br/>
+	<br/>
+	<form>
+	<br/>file decryption password: 
+		<input id="loginFilePwd" type="test" size="30" />
+		<br/>
+		<input id="loginContentFile" type="file" accept="application/json" />
+		
+	</form>
+	<br/>
+	
+	<input type="file" id="loginFileElemDISABLED" multiple accept="application/json" style="display:none" onchange="OOOOhandleFiles(this.files)">
+<a href="#" id="loginFileSelect">Select some files</a>
+	
+	
+	<!-- Just as login is through adding keys, logout is through removing them. -->
+	<h3>Log out</h3>
+	A Logout backups all encryption and decryption keys to a local password-protected file, before removing them. 
+
+	<br/>
+			
+				<form>
+	<br/>file encryption password: 
+		<input id="logoutFilePwd" type="text" size="30" />
+		<br/>
+				<button class="logout">logout</button>
+		
+	</form>
+			
+			
+			A "Backup Keys", followed by a "Flush Keys" does the same thing as this Logout operation. 
+
+	<!-- -->
+	<h3>Flush Keys</h3>
+	This removes all encryption and decryption keys. Some browser clean-up operations undertaken by for example cookie-wiping utilities may perform the same function. 
+	It is therefore desirable to have all the keys backed up prior to runing this operation. 
+
+	<br/>
+				<button class="flush-all-keys">flush all keys</button>
+
+
+					
+	<!-- -->
+	<h3>Backup Keys</h3>
+	The database of keys is kept in a database belonging to the browser. Some clean-up operations undertaken by for example cookie-wiping utilities may remove this database. It is therefore desirable to have all the keys be backedup. 
+	This prosedure creates an encrypted JSON text file containing all encryption and decryption keys. The file is intended to be used for subsequent logins.
+	
+			<!-- Clicking this button must not regenerate the page, since that will interfere with the complete backup -->
+			<input id="backupFilePwd" type="text" size="30" />
+	<br/>
+				<button class="backup-all-keys" id="backup-all-keys_button">backup key database</button>
+
+	<h3>Import Keys</h3>
+		Add encryption and decryption keys to the database, from a file. 
+		<input id="importFilePwd" type="text" size="30" />
+		<br/>
+			<input id="importContentFile" type="file" accept="application/json" />
+	
+				
+
+					<script type="module" src="navigate-collection.js"></script>
+				</body>
+			</html>
+			

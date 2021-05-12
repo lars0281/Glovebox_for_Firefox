@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="choose_beast.css"/>
+  </head>
+
+<body>
+	
+	<table border=1 bgcolor="white">
+	<tr height=30><td>name</td><td>public key</td></tr>
+
+	<tr>
+	<td>Name001</td>
+	<td><pre>-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDk9DDQ9UohkP75wy9oIDruGRw2
+YCVLgaeh+cbda5f3G6nZ2Ny7Q3CQ6qweow0pjknCzBTlKoVAFYszt4IpJZ68+Eak
+JCoSHarWZmJ84BbBEwulameuOLzI7Ss4Itc3Kz9wTbj3WwPwc/Vb1uF9MINvyE91
+zdg6AyRkdeA1t3rdrwIDAQAB
+-----END PUBLIC KEY-----</pre></td>
+
+	<td><pre>-----BEGIN RSA PRIVATE KEY-----
+MIICXQIBAAKBgQDk9DDQ9UohkP75wy9oIDruGRw2YCVLgaeh+cbda5f3G6nZ2Ny7
+Q3CQ6qweow0pjknCzBTlKoVAFYszt4IpJZ68+EakJCoSHarWZmJ84BbBEwulameu
+OLzI7Ss4Itc3Kz9wTbj3WwPwc/Vb1uF9MINvyE91zdg6AyRkdeA1t3rdrwIDAQAB
+AoGADQ8IgcKb2dJFWMWTPKMp+U6hV1Cgj+/zOb/fYd2zKzr+sxg1btDn6LwZ2R1/
+sLEW7+9n+bI1K3SPHgIHgIVOymjU5ka9QLrAusJk5WJGDdR+OFbmPK5BQp+kKj67
+jReWOwLcKcnI9+FVR2wvry1uY9bGGc2SgSyuru9hbLgEtAECQQD6N06GS7Dc31c2
+cqKMAyi3LuycWDw2xHoB7+vqocgigBZ0R13P5m7IikmBuu5+uDqMCAe9pWFX5vqt
+zWQkldSvAkEA6j8PyS8Xsu3o/Ufw2UBgtfxxOqOta3ExrqLbKA9eG9U5uSzLrbef
+Xy7AmOAykrsYZEdj8yO6dC/hFFeSVL/HAQJBAJ86HM1XU3hq5AvxDUF+LSXNRaME
+f2T2yRF8hSutwjc6PY/HboqDgFI7tiVJOMYJJLDB13M2z+hpQ3Lgtm6Vrl8CQQCZ
+3WJZG/3NIkjwVdj2WzsrTu5xPiIjeO7Rb1fVMIL4dU69O5duPDcLJoKL6HhPuWWE
+OQCGLOnEd864te0AjhgBAkBx7rAvb7hScqMXxNjJMU2n3mdredXS88VV1SvtapX6
+b4RcRn8v/rcube0btfctHGGb4vYRmpy+4FbpSn40V2zM
+-----END RSA PRIVATE KEY-----</pre></td></tr>
+
+
+	</table>
+	<!--
+		# create x509 key pair
+openssl genrsa -out rsa.private 1024
+		
+		-----BEGIN RSA PRIVATE KEY-----
+MIICXQIBAAKBgQDk9DDQ9UohkP75wy9oIDruGRw2YCVLgaeh+cbda5f3G6nZ2Ny7
+Q3CQ6qweow0pjknCzBTlKoVAFYszt4IpJZ68+EakJCoSHarWZmJ84BbBEwulameu
+OLzI7Ss4Itc3Kz9wTbj3WwPwc/Vb1uF9MINvyE91zdg6AyRkdeA1t3rdrwIDAQAB
+AoGADQ8IgcKb2dJFWMWTPKMp+U6hV1Cgj+/zOb/fYd2zKzr+sxg1btDn6LwZ2R1/
+sLEW7+9n+bI1K3SPHgIHgIVOymjU5ka9QLrAusJk5WJGDdR+OFbmPK5BQp+kKj67
+jReWOwLcKcnI9+FVR2wvry1uY9bGGc2SgSyuru9hbLgEtAECQQD6N06GS7Dc31c2
+cqKMAyi3LuycWDw2xHoB7+vqocgigBZ0R13P5m7IikmBuu5+uDqMCAe9pWFX5vqt
+zWQkldSvAkEA6j8PyS8Xsu3o/Ufw2UBgtfxxOqOta3ExrqLbKA9eG9U5uSzLrbef
+Xy7AmOAykrsYZEdj8yO6dC/hFFeSVL/HAQJBAJ86HM1XU3hq5AvxDUF+LSXNRaME
+f2T2yRF8hSutwjc6PY/HboqDgFI7tiVJOMYJJLDB13M2z+hpQ3Lgtm6Vrl8CQQCZ
+3WJZG/3NIkjwVdj2WzsrTu5xPiIjeO7Rb1fVMIL4dU69O5duPDcLJoKL6HhPuWWE
+OQCGLOnEd864te0AjhgBAkBx7rAvb7hScqMXxNjJMU2n3mdredXS88VV1SvtapX6
+b4RcRn8v/rcube0btfctHGGb4vYRmpy+4FbpSn40V2zM
+-----END RSA PRIVATE KEY-----
+
+
+create public key 
+openssl rsa -in rsa.private -out rsa.public -pubout -outform PEM
+		
+		-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDk9DDQ9UohkP75wy9oIDruGRw2
+YCVLgaeh+cbda5f3G6nZ2Ny7Q3CQ6qweow0pjknCzBTlKoVAFYszt4IpJZ68+Eak
+JCoSHarWZmJ84BbBEwulameuOLzI7Ss4Itc3Kz9wTbj3WwPwc/Vb1uF9MINvyE91
+zdg6AyRkdeA1t3rdrwIDAQAB
+-----END PUBLIC KEY-----
+
+		
+		" rmove passord from private key
+		
+		-->
+	
+	
+  <div id="popup-content">
+    <div class="button beast">Frog</div>
+    <div class="button beast">Turtle</div>
+    <div class="button beast">Snake</div>
+    <div class="button reset">Reset</div>
+  </div>
+  <div id="error-content" class="hidden">
+    <p>Can't beastify this web page.</p><p>Try a different page.</p>
+  </div>
+  <script src="choose_beast.js"></script>
+</body>
+
+</html>
