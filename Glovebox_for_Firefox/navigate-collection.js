@@ -160,7 +160,6 @@ class NavigateCollectionUI {
 
         // test imports, encrypt
         var key = "ZxlNEnojO5HbQngiYvrqu32Br6V";
-
         var password = "password";
         var data = "narayan prusty";
         var key = null;
