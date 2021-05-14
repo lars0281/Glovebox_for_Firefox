@@ -1,7 +1,5 @@
 
-
-
-export  function loadFromIndexedDB_async(dbName, storeName, id) {
+function loadFromIndexedDB_async(dbName, storeName, id) {
     console.log("loadFromIndexedDB:0");
     console.log("loadFromIndexedDB:1 " + dbName);
     console.log("loadFromIndexedDB:2 " + storeName);
@@ -22,16 +20,19 @@ export  function loadFromIndexedDB_async(dbName, storeName, id) {
         };
 
         dbRequest.onsuccess = function (event) {
-            //  console.log("loadFromIndexedDB:onsuccess ");
+            // console.log("loadFromIndexedDB:onsuccess ");
 
             var database = event.target.result;
             var transaction = database.transaction([storeName]);
-            //  console.log("loadFromIndexedDB:transaction: " + JSON.stringify(transaction));
+            // console.log("loadFromIndexedDB:transaction: " +
+			// JSON.stringify(transaction));
             var objectStore = transaction.objectStore(storeName);
-            //  console.log("loadFromIndexedDB:objectStore: " + JSON.stringify(objectStore));
+            // console.log("loadFromIndexedDB:objectStore: " +
+			// JSON.stringify(objectStore));
             var objectRequest = objectStore.get(id);
 
-            // console.log("loadFromIndexedDB:objectRequest: " + JSON.stringify(objectRequest));
+            // console.log("loadFromIndexedDB:objectRequest: " +
+			// JSON.stringify(objectRequest));
 
 
 try {
@@ -48,7 +49,7 @@ try {
 
                     resolve(objectRequest.result);
                 } else {
-                    //reject(Error('object not found'));
+                    // reject(Error('object not found'));
 				reject('object not found');
 					
                 }
@@ -63,15 +64,6 @@ try {
     });
 }
 
-export async function loadFromIndexedDB(dbName, storeName, id) {
-    console.log("loadFromIndexedDB:0");
-    console.log("loadFromIndexedDB:1 " + dbName);
-    console.log("loadFromIndexedDB:2 " + storeName);
-    console.log("loadFromIndexedDB:3 " + id);
-
-    await loadFromIndexedDB_async(dbName, storeName, id);
-
-}
 
 export async function generateRSAKeyPair() {
     // for signing
@@ -147,16 +139,17 @@ export function saveToIndexedDB_async(dbName, storeName, keyId, object) {
     console.log("saveToIndexedDB_async:keyId " + keyId);
     console.log("saveToIndexedDB_async:object " + JSON.stringify(object));
 
-    //  indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
+    // indexedDB = window.indexedDB || window.webkitIndexedDB ||
+	// window.mozIndexedDB || window.msIndexedDB;
 
     return new Promise(
         function (resolve, reject) {
 
-        //console.log("saveToIndexedDB: 0 resolve=" + resolve )
-        //console.log("saveToIndexedDB: 0 reject=" + reject )
+        // console.log("saveToIndexedDB: 0 resolve=" + resolve )
+        // console.log("saveToIndexedDB: 0 reject=" + reject )
 
-        //if (object.taskTitle === undefined)
-        //            reject(Error('object has no taskTitle.'));
+        // if (object.taskTitle === undefined)
+        // reject(Error('object has no taskTitle.'));
 
 var dbRequest;
 
@@ -197,7 +190,9 @@ var dbRequest;
                 var objectStore = transaction.objectStore(storeName);
                 console.log("saveToIndexedDB:objectStore put: " + JSON.stringify(object));
 
-                var objectRequest = objectStore.put(object); // Overwrite if already exists
+                var objectRequest = objectStore.put(object); // Overwrite if
+																// already
+																// exists
 
                 console.log("saveToIndexedDB:objectRequest: " + JSON.stringify(objectRequest));
 
@@ -221,37 +216,29 @@ var dbRequest;
     });
 }
 
-export async function saveToIndexedDB(dbName, storeName, id, object) {
 
-    console.log("saveToIndexedDB:1 " + dbName);
-    console.log("saveToIndexedDB:2 " + storeName);
-    console.log("saveToIndexedDB:3 " + id);
-    console.log("saveToIndexedDB:4 " + JSON.stringify(object));
-
-    await saveToIndexedDB_async(dbName, storeName, id, object);
-
-}
 
 export function deleteFromIndexedDB_async(dbName, storeName, keyId) {
     console.log("deleteFromIndexedDB:1 " + dbName);
     console.log("deleteFromIndexedDB:2 " + storeName);
     console.log("deleteFromIndexedDB:3 " + keyId);
 
-    //  indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
+    // indexedDB = window.indexedDB || window.webkitIndexedDB ||
+	// window.mozIndexedDB || window.msIndexedDB;
 
     return new Promise(
         function (resolve, reject) {
 
         var dbRequest = indexedDB.open(dbName);
 
-        //  console.log("deleteFromIndexedDB: 1 dbRequest=" + dbRequest)
+        // console.log("deleteFromIndexedDB: 1 dbRequest=" + dbRequest)
 
         dbRequest.onerror = function (event) {
             console.log("deleteFromIndexedDB:error.open:db " + dbName);
             reject(Error("IndexedDB database error"));
         };
 
-        //  console.log("deleteFromIndexedDB: 2")
+        // console.log("deleteFromIndexedDB: 2")
 
         dbRequest.onupgradeneeded = function (event) {
             console.log("deleteFromIndexedDB: 21")
@@ -265,11 +252,12 @@ export function deleteFromIndexedDB_async(dbName, storeName, keyId) {
         // console.log("deleteFromIndexedDB: 3")
 
         dbRequest.onsuccess = function (event) {
-            //       console.log("deleteFromIndexedDB: 31")
+            // console.log("deleteFromIndexedDB: 31")
             var database = event.target.result;
             var transaction = database.transaction([storeName], 'readwrite');
             var objectStore = transaction.objectStore(storeName);
-            var objectRequest = objectStore.delete(keyId); // Overwrite if exists
+            var objectRequest = objectStore.delete(keyId); // Overwrite if
+															// exists
 
             objectRequest.onerror = function (event) {
                 console.log("deleteFromIndexedDB:error: " + storeName + "/" + keyId);
@@ -285,21 +273,11 @@ export function deleteFromIndexedDB_async(dbName, storeName, keyId) {
     });
 }
 
-export async function deleteFromIndexedDB(dbName, storeName, keyId) {
-    console.log("deleteFromIndexedDB:1 " + dbName);
-    console.log("deleteFromIndexedDB:2 " + storeName);
-    console.log("deleteFromIndexedDB:3 " + keyId);
 
-    await deleteFromIndexedDB_async(dbName, storeName, keyId);
-
-    //  indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
-
-}
 
 /**
- * Secure Hash Algorithm (SHA1)
- * http://www.webtoolkit.info/
- **/
+ * Secure Hash Algorithm (SHA1) http://www.webtoolkit.info/
+ */
 export function SHA1(msg) {
     console.log("navigate-collection:SHA1");
     function rotate_left(n, s) {

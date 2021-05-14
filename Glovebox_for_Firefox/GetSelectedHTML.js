@@ -176,7 +176,8 @@ function httpGetAsync(theUrl, callback) {
 }
 
 function getURLRoot() {
-    // get the root of the URL for the page, suitable to have a relative URI appended
+    // get the root of the URL for the page, suitable to have a relative URI
+	// appended
 
     // the URL must end in a "/" (slash)
 
@@ -196,46 +197,46 @@ function haveChildnodes(node) {
 }
 
 function getAllDescendants(node) {
-    console.log("getAllDescendants");
+    console.debug("getAllDescendants");
 
     var all = [];
     var content_string = "";
     getDescendants(node);
 
     function getDescendants(node) {
-        console.log("-------------------getDescendants");
-        console.log(haveChildnodes(node));
-        console.log(node.hasChildNodes());
+        console.debug("-------------------getDescendants");
+        console.debug(haveChildnodes(node));
+        console.debug(node.hasChildNodes());
 
         if (node) {
             if (node.hasChildNodes()) {
-                console.log("NOT appending: " + node.toString());
-                console.log("NOT appending: " + node.nodeName);
+                console.debug("NOT appending: " + node.toString());
+                console.debug("NOT appending: " + node.nodeName);
             } else {
-                console.log("appending: " + node.textContent);
+                console.debug("appending: " + node.textContent);
             }
         }
         for (var i = 0; i < node.childNodes.length; i++) {
-            console.log("++++++++++++++examining");
-            console.log(node.childNodes[i]);
+            console.debug("++++++++++++++examining");
+            console.debug(node.childNodes[i]);
             var child = node.childNodes[i];
-            console.log(child);
-            console.log(child.nodeName);
-            console.log(haveChildnodes(child));
-            console.log(child.hasChildNodes());
+            console.debug(child);
+            console.debug(child.nodeName);
+            console.debug(haveChildnodes(child));
+            console.debug(child.hasChildNodes());
             if (haveChildnodes(node)) {
 
-                console.log("NOT appending: " + child.toString());
+                console.debug("NOT appending: " + child.toString());
             } else {
-                console.log("appending: " + child.toString());
+                console.debug("appending: " + child.toString());
             }
             getDescendants(child);
             all.push(child);
 
         }
     }
-    console.log(content_string);
-    console.log(all);
+    console.debug(content_string);
+    console.debug(all);
     return all;
 }
 
@@ -243,12 +244,13 @@ function allDescendants(node) {
     for (var i = 0; i < node.childNodes.length; i++) {
         var child = node.childNodes[i];
         allDescendants(child);
-        console.log(child);
+        console.debug(child);
     }
 }
 
 function getURLrelative(uri) {
-    // a relative URL should not shat with either the protocol (http etc.), a drive letter, or a slash ( / )
+    // a relative URL should not shat with either the protocol (http etc.), a
+	// drive letter, or a slash ( / )
 
     var rel = "";
     // remove all lagging characters that are not a slash
@@ -291,8 +293,10 @@ function _base64ToArrayBuffer(base64) {
 }
 
 function base64EncodeUnicode(str) {
-    // Firstly, escape the string using encodeURIComponent to get the UTF-8 encoding of the characters,
-    // Secondly, we convert the percent encodings into raw bytes, and add it to btoa() function.
+    // Firstly, escape the string using encodeURIComponent to get the UTF-8
+	// encoding of the characters,
+    // Secondly, we convert the percent encodings into raw bytes, and add it to
+	// btoa() function.
     utf8Bytes = encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
             return String.fromCharCode('0x' + p1);
         });
@@ -325,26 +329,27 @@ function packUpContent(raw_data) {
 
     try {
 
-        console.log("compact: " + raw_data);
-        //	   console.log('background.js:0: source text length: ' + selection_html.length);
+        console.debug("compact: " + raw_data);
+        // console.debug('background.js:0: source text length: ' +
+		// selection_html.length);
         var shorty_out = new Shorty();
         var compressed_plaintext = shorty_out.deflate(raw_data);
 
-        console.log("compact: " + base64EncodeUnicode(raw_data));
+        console.debug("compact: " + base64EncodeUnicode(raw_data));
 
-        console.log("compacted: " + compressed_plaintext);
-        console.log("compacted: " + base64EncodeUnicode(compressed_plaintext));
+        console.debug("compacted: " + compressed_plaintext);
+        console.debug("compacted: " + base64EncodeUnicode(compressed_plaintext));
 
-        console.log("compacted: " + arrayBufferToString(compressed_plaintext));
+        console.debug("compacted: " + arrayBufferToString(compressed_plaintext));
 
-        console.log("compacted: " + _arrayBufferToBase64(compressed_plaintext));
+        console.debug("compacted: " + _arrayBufferToBase64(compressed_plaintext));
 
-        console.log("compacted: " + stringToArrayBuffer(compressed_plaintext));
+        console.debug("compacted: " + stringToArrayBuffer(compressed_plaintext));
 
-        console.log("compacted: " + _arrayBufferToBase64(stringToArrayBuffer(compressed_plaintext)));
+        console.debug("compacted: " + _arrayBufferToBase64(stringToArrayBuffer(compressed_plaintext)));
 
         var shorty_verify = new Shorty();
-        console.log(shorty_verify.inflate(raw_data));
+        console.debug(shorty_verify.inflate(raw_data));
 
         // shorty is suitable for compacting strings that are not very long
 
@@ -353,26 +358,26 @@ function packUpContent(raw_data) {
 
         // return a base64 encoded string
     } catch (e) {
-        console.log(e);
+        console.debug(e);
     }
 
 }
 
-//Load blob (promise)
+// Load blob (promise)
 // get content of URL and place it inside the src attribute
 function BACKUPinsertBlob(url, j, node) {
-    console.log("##### loadBlob.start: " + url + "  #" + j + " node: ");
-    console.log(node);
+    console.debug("##### loadBlob.start: " + url + "  #" + j + " node: ");
+    console.debug(node);
     var p = new Promise((resolve, reject) => {
-            console.log(resolve);
-            console.log(reject);
+            console.debug(resolve);
+            console.debug(reject);
             const xhr = new XMLHttpRequest();
             xhr.open('GET', url, true);
             xhr.responseType = 'blob';
             xhr.onload = () => resolve(xhr.response);
             xhr.onerror = () => reject(xhr.statusText);
             xhr.send();
-            console.log("sent");
+            console.debug("sent");
 
         });
     return p;
@@ -380,28 +385,29 @@ function BACKUPinsertBlob(url, j, node) {
 }
 
 function getBlob(url, j, node) {
-    console.log("##### loadBlob.start: " + url + "  #" + j + " node: ");
-    console.log(node);
+    console.debug("##### loadBlob.start: " + url + "  #" + j + " node: ");
+    console.debug(node);
     var p = new Promise((resolve, reject) => {
-            console.log(resolve);
-            console.log(reject);
+            console.debug(resolve);
+            console.debug(reject);
             const xhr = new XMLHttpRequest();
             xhr.open('GET', url, true);
             xhr.responseType = 'blob';
             xhr.onload = function () {
-                //resolve(xhr.response);
+                // resolve(xhr.response);
                 var reader = new FileReader();
                 reader.readAsDataURL(xhr.response);
                 reader.onload = function (e) {
-                    //      console.log('DataURL:', e.target.result);
+                    // console.debug('DataURL:', e.target.result);
                     resolve(e.target.result);
-                    //file_base64_ed = e.target.result.replace(/^([^,]*),/, '');
+                    // file_base64_ed = e.target.result.replace(/^([^,]*),/,
+					// '');
                 };
             };
 
             xhr.onerror = () => reject(xhr.statusText);
             xhr.send();
-            console.log("sent");
+            console.debug("sent");
 
         });
     return p;
@@ -409,43 +415,44 @@ function getBlob(url, j, node) {
 }
 
 function insertBlob(url, j, node) {
-    console.log("##### loadBlob.start: " + url + "  #" + j + " node: ");
-    console.log(node);
+    console.debug("##### loadBlob.start: " + url + "  #" + j + " node: ");
+    console.debug(node);
     var p = new Promise((resolve, reject) => {
-            console.log(resolve);
-            console.log(reject);
+            console.debug(resolve);
+            console.debug(reject);
             const xhr = new XMLHttpRequest();
             xhr.open('GET', url, true);
             xhr.responseType = 'blob';
-            //   xhr.onload = () => resolve(xhr.response);
+            // xhr.onload = () => resolve(xhr.response);
 
             xhr.onload = function () {
-                //resolve(xhr.response);
+                // resolve(xhr.response);
                 var reader = new FileReader();
                 reader.readAsDataURL(xhr.response);
                 reader.onload = function (e) {
-                    //        console.log('DataURL:', e.target.result);
+                    // console.debug('DataURL:', e.target.result);
                     resolve(e.target.result);
-                    //file_base64_ed = e.target.result.replace(/^([^,]*),/, '');
+                    // file_base64_ed = e.target.result.replace(/^([^,]*),/,
+					// '');
                 };
-            };
+            }
 
             xhr.onerror = () => reject(xhr.statusText);
             xhr.send();
-            console.log("sent");
+            console.debug("sent");
 
         });
     return p.then(function (res) {
-        console.log("############### 2.2.3");
-        console.log(res);
-        console.log(node);
+        console.debug("############### 2.2.3");
+        console.debug(res);
+        console.debug(node);
         node.setAttribute('test5', 'value51');
         // data was retrieved. Now insert it into the right place in the DOM
         node.setAttribute('src5', res);
-        console.log(node);
-        //    	elem.setAttribute('test5', 'value51');
+        console.debug(node);
+        // elem.setAttribute('test5', 'value51');
         var s = new Promise((resolve, reject) => {
-                console.log(resolve);
+                console.debug(resolve);
             });
         return s;
 
@@ -453,20 +460,20 @@ function insertBlob(url, j, node) {
 }
 
 function loadBlob(j, node) {
-    console.log("##### insertdBlob.start: " + "  #" + j + " node: ");
-    console.log(node);
+    console.debug("##### insertdBlob.start: " + "  #" + j + " node: ");
+    console.debug(node);
     return new Promise(function (resolve, reject) {
-        console.log(resolve);
-        console.log(reject);
-        console.log("set");
+        console.debug(resolve);
+        console.debug(reject);
+        console.debug("set");
         const n = node;
-        console.log(n);
+        console.debug(n);
         n.setAttribute('test2', 'value2');
 
     });
 }
 
-//Create image from blob (createObjectURL)
+// Create image from blob (createObjectURL)
 function imageFromBlob(blob) {
     const img = new Image();
     img.onload = () => URL.revokeObjectURL(img.src);
@@ -477,14 +484,14 @@ function imageFromBlob(blob) {
 function getContent(url) {
     var file_base64_ed = "";
     var request = new XMLHttpRequest();
-    //request.open('GET', "file:///C:/glovebox-dev/test_pages/1.html", true);
+    // request.open('GET', "file:///C:/glovebox-dev/test_pages/1.html", true);
     request.open('GET', url, true);
     request.responseType = 'blob';
     request.onload = function () {
         var reader = new FileReader();
         reader.readAsDataURL(request.response);
         reader.onload = function (e) {
-            console.log('DataURL:', e.target.result);
+            console.debug('DataURL:', e.target.result);
             file_base64_ed = e.target.result.replace(/^([^,]*),/, '');
         };
     };
@@ -493,13 +500,13 @@ function getContent(url) {
 }
 
 function getSelHtm(request, sender, sendResponse) {
-    console.log("request selected JSON(request): " + JSON.stringify(request));
-    console.log("request selected JSON(sender): " + JSON.stringify(sender));
-    console.log("request selected JSON(sendResponse): " + JSON.stringify(sendResponse));
+    console.debug("request selected JSON(request): " + JSON.stringify(request));
+    console.debug("request selected JSON(sender): " + JSON.stringify(sender));
+    console.debug("request selected JSON(sendResponse): " + JSON.stringify(sendResponse));
 
-    //To add: perform validation of sender
+    // To add: perform validation of sender
 
-    console.log(`content script sent a message: ${request.content}`);
+    console.debug(`content script sent a message: ${request.content}`);
     setTimeout(() => {
         sendResponse({
             doc: "async response from background script"
@@ -508,24 +515,24 @@ function getSelHtm(request, sender, sendResponse) {
     return true;
 
     const sleep = function (ms) {
-        console.log("ms:" + ms);
+        console.debug("ms:" + ms);
         return new Promise(function (resolve, reject) {
-            console.log("ms:" + ms);
+            console.debug("ms:" + ms);
             return setTimeout(resolve, ms);
         });
 
     }
     // Using Sleep,
-    console.log('Now');
+    console.debug('Now');
 
     // sleep(3000).then(function(){
     // return Promise.resolve({
-    // 	response: {"doc":"response from background script"};
+    // response: {"doc":"response from background script"};
     // });
 
 
     sleep(3000).then(v => {
-        console.log('After three seconds');
+        console.debug('After three seconds');
         return Promise.resolve({
             response: {
                 "doc": "modified_selection_text"
@@ -541,24 +548,26 @@ function getSelectedHTML(request, sender, sendResponse) {
     // contenttype
     // permitted values: text, html, embeded, linked
 
-    console.log("request selected JSON(request): " + JSON.stringify(request));
-    console.log("request selected JSON(sender): " + JSON.stringify(sender));
-    console.log("request selected JSON(sendResponse): " + JSON.stringify(sendResponse));
+    console.debug("request selected JSON(request): " + JSON.stringify(request));
+    console.debug("request selected JSON(sender): " + JSON.stringify(sender));
+    console.debug("request selected JSON(sendResponse): " + JSON.stringify(sendResponse));
 
-//    const sleep = function (ms) {
-//        console.log("ms:" + ms);
-//        return new Promise(function (resolve, reject) {
-//            console.log("ms:" + ms);
-//            return setTimeout(resolve, ms);
-//        });
-//    }
+// const sleep = function (ms) {
+// console.debug("ms:" + ms);
+// return new Promise(function (resolve, reject) {
+// console.debug("ms:" + ms);
+// return setTimeout(resolve, ms);
+// });
+// }
     // Using Sleep,
-    //   console.log('Now');
-    //   sleep(3000).then(v => {
-    //       console.log('After three seconds')
-    //   });
+    // console.debug('Now');
+    // sleep(3000).then(v => {
+    // console.debug('After three seconds')
+    // });
 
-    // Use the represence of the dummy value "Glbx_marker" in the request as a insecure "shared secret" to try to ensure only request from the background.js are accepted.
+    // Use the represence of the dummy value "Glbx_marker" in the request as a
+	// insecure "shared secret" to try to ensure only request from the
+	// background.js are accepted.
     // This must be improved.
     try {
 
@@ -566,7 +575,7 @@ function getSelectedHTML(request, sender, sendResponse) {
         	// a valid marker was included, proceed
         	
 
-            console.log("request selected JSON(request): " + JSON.stringify(request));
+            console.debug("request selected JSON(request): " + JSON.stringify(request));
             var selection_html = "";
 
             var contenttype = "text"; // set text-only as the default
@@ -581,42 +590,46 @@ function getSelectedHTML(request, sender, sendResponse) {
                     contenttype = "linked";
                 }
             } catch (e) {
-                console.log(e);
+                console.debug(e);
             }
 
-            console.log(request.contenttype);
-            console.log(contenttype);
+            console.debug(request.contenttype);
+            console.debug(contenttype);
 
         	
-            console.log(window.getSelection);
+            console.debug(window.getSelection);
             if (typeof window.getSelection != "undefined") {
                 var sel = window.getSelection();
-                console.log(sel);
+                console.debug(sel);
                 if (sel.rangeCount) {
                     var container = document.createElement("div");
                     for (var i = 0, len = sel.rangeCount; i < len; ++i) {
                         container.appendChild(sel.getRangeAt(i).cloneContents());
 
-                        console.log("#######################");
+                        console.debug("#######################");
                         var selected_range = sel.getRangeAt(i);
                         // in this range, return all nodes
                         var docFrag = selected_range.cloneContents();
 
                         // loop through children
 
-                        //var a = getAllDescendants(docFrag);
-                        //console.log(a);
+                        // var a = getAllDescendants(docFrag);
+                        // console.debug(a);
                     }
 
                     if (contenttype == "text") {
                         // get the text presented by the html
-                    	// this is different from using the selction presented in the info object
+                    	// this is different from using the selction presented
+						// in the info object
                     
-                        // there is a problem with the innerHTML functionality. When a text node is cut into, the tag it starts with, is included in the innerhtml extract. This can lead to unanticipated effects at decryption time.
+                        // there is a problem with the innerHTML functionality.
+						// When a text node is cut into, the tag it starts with,
+						// is included in the innerhtml extract. This can lead
+						// to unanticipated effects at decryption time.
 
                     	var selection_text = "";
                     	selection_text = container.textContent;
-                        //console.log(selection_html);
+                        // console.debug(selection_html);
 
                         setTimeout(() => {
                             sendResponse({
@@ -629,16 +642,20 @@ function getSelectedHTML(request, sender, sendResponse) {
                     } else if (contenttype == "html") {
                         // get the html
                         // additional functionality to be added:
-                        // retrieval and encoding of inline content such as files and images
-                        console.log(container.innerHTML);
-                        console.log(container.toString());
-                        console.log(container.textContent);
+                        // retrieval and encoding of inline content such as
+						// files and images
+                        console.debug(container.innerHTML);
+                        console.debug(container.toString());
+                        console.debug(container.textContent);
 
-                        // there is a problem with the innerHTML functionality. When a text node is cut into, the tag it starts with, is included in the innerhtml extract. This can lead to unanticipated effects at decryption time.
+                        // there is a problem with the innerHTML functionality.
+						// When a text node is cut into, the tag it starts with,
+						// is included in the innerhtml extract. This can lead
+						// to unanticipated effects at decryption time.
 
 
                         selection_html = container.innerHTML;
-                        //console.log(selection_html);
+                        // console.debug(selection_html);
 
                         setTimeout(() => {
                             sendResponse({
@@ -649,44 +666,48 @@ function getSelectedHTML(request, sender, sendResponse) {
                         }, 3000);
                         
                     } else if (contenttype == "embeded") {
-                        console.log("gather up all embeded data");
+                        console.debug("gather up all embeded data");
                         // gather up all data
-                        // If data is placed inline , if should be included the "html" encryption above
-                        // This section is for following URLs and taking in the content at the end of those URLs
-                        // Rewrite the html to hold the files referenced by src attributes
+                        // If data is placed inline , if should be included the
+						// "html" encryption above
+                        // This section is for following URLs and taking in the
+						// content at the end of those URLs
+                        // Rewrite the html to hold the files referenced by src
+						// attributes
 
                         // loop through all nodes inside the selection
 
-                        //            let nodes = container.querySelectorAll('*');
+                        // let nodes = container.querySelectorAll('*');
 
-                        //             for (let n of nodes) {
-                        ////                    console.log("##");
-                        //                     console.log(n);
-                        //                       console.log(n.toString());
-                        //       }
+                        // for (let n of nodes) {
+                        // // console.debug("##");
+                        // console.debug(n);
+                        // console.debug(n.toString());
+                        // }
 
                         // <img alt="a picture" src="mypicture.png"/>
                         // becomes
                         // <img src="data:image/png;base64,BASE64DATA"/>
 
-                        // search through the abstracted content of the selection
+                        // search through the abstracted content of the
+						// selection
                         var j = 0;
                         let elements = container.querySelectorAll('img[src]');
                         var url_promises = [];
                         var url_nodes = [];
 
                         for (let elem of elements) {
-                            console.log("##### - found");
-                            console.log(elem);
-                            console.log(elem.toString());
-                            console.log(elem.getAttribute('src'));
+                            console.debug("##### - found");
+                            console.debug(elem);
+                            console.debug(elem.toString());
+                            console.debug(elem.getAttribute('src'));
 
                             elem.setAttribute('test', 'value');
-                            console.log(elem);
+                            console.debug(elem);
 
                             var uri = "";
                             uri = elem.getAttribute('src');
-                            console.log("get: " + uri);
+                            console.debug("get: " + uri);
                             // is the src URL is already embeded data
 
                             var re_data = new RegExp("^data:");
@@ -701,62 +722,69 @@ function getSelectedHTML(request, sender, sendResponse) {
                             try {
 
                                 if (re_data.test(uri)) {
-                                    // do nothing , since this is already embeded data
-                                    console.log("do nothing , since this is already embeded data");
+                                    // do nothing , since this is already
+									// embeded data
+                                    console.debug("do nothing , since this is already embeded data");
                                 } else if (re_http.test(uri)) {
-                                    console.log("fully qualified http url");
+                                    console.debug("fully qualified http url");
 
                                     request.open('GET', "file:///C:/glovebox-dev/test_pages/1.html", true);
-                                    //request.open('GET', uri, true);
+                                    // request.open('GET', uri, true);
                                     request.responseType = 'blob';
                                     request.onload = function () {
                                         var reader = new FileReader();
                                         reader.readAsDataURL(request.response);
                                         reader.onload = function (e) {
-                                            console.log('DataURL:', e.target.result);
+                                            console.debug('DataURL:', e.target.result);
                                             file_base64_ed = e.target.result.replace(/^([^,]*),/, '');
                                         };
                                     };
                                     request.send();
 
                                 } else if (re_https.test(uri)) {
-                                    console.log("fully qualified https url");
-                                    console.log("use this url: " + uri);
-                                    //request.open('GET', "file:///C:/glovebox-dev/test_pages/1.html", true);
+                                    console.debug("fully qualified https url");
+                                    console.debug("use this url: " + uri);
+                                    // request.open('GET',
+									// "file:///C:/glovebox-dev/test_pages/1.html",
+									// true);
                                     // request.open('GET', uri, true);
                                     // request.responseType = 'blob';
 
                                     // request.onload = function () {
-                                    //     var reader = new FileReader();
-                                    //     reader.readAsDataURL(request.response);
-                                    //     reader.onload = function (e) {
-                                    //        console.log('DataURL:', e.target.result);
-                                    //        file_base64_ed = e.target.result.replace(/^([^,]*),/, '');
-                                    //    };
-                                    //};
-                                    //request.send();
+                                    // var reader = new FileReader();
+                                    // reader.readAsDataURL(request.response);
+                                    // reader.onload = function (e) {
+                                    // console.debug('DataURL:',
+									// e.target.result);
+                                    // file_base64_ed =
+									// e.target.result.replace(/^([^,]*),/, '');
+                                    // };
+                                    // };
+                                    // request.send();
 
                                 } else if (re_file.test(uri)) {
-                                    console.log("Valid file url");
+                                    console.debug("Valid file url");
 
-                                    // as default, use the one for the current page
-                                    console.log(window.location.href);
+                                    // as default, use the one for the current
+									// page
+                                    console.debug(window.location.href);
 
                                     request.open('GET', "file:///C:/glovebox-dev/test_pages/1.html", true);
-                                    //request.open('GET', uri, true);
+                                    // request.open('GET', uri, true);
                                     request.responseType = 'blob';
 
                                 } else {
-                                    console.log("missing protocol - read from page");
+                                    console.debug("missing protocol - read from page");
                                     var use_url = "";
                                     var protocol = "";
                                     protocol = window.location.href.replace(/^([^:]*:).*/, "$1//");
-                                    console.log(getURLrelative(uri));
-                                    console.log(getURLRoot());
+                                    console.debug(getURLrelative(uri));
+                                    console.debug(getURLRoot());
 
                                     // is the uri relative ?
-                                    // in which case the appropriate root must be determined from the page url
-                                    console.log(isRelativeURI("image/1.png"));
+                                    // in which case the appropriate root must
+									// be determined from the page url
+                                    console.debug(isRelativeURI("image/1.png"));
 
                                     if (isRelativeURI(uri)) {
                                         use_url = getURLRoot() + getURLrelative(uri);
@@ -764,29 +792,35 @@ function getSelectedHTML(request, sender, sendResponse) {
                                         use_url = uri;
                                     }
 
-                                    console.log("use this url: " + use_url);
+                                    console.debug("use this url: " + use_url);
 
-                                    //console.log(getContent(use_url));
-                                    //request.open('GET', "file:///C:/glovebox-dev/test_pages/1.html", true);
+                                    // console.debug(getContent(use_url));
+                                    // request.open('GET',
+									// "file:///C:/glovebox-dev/test_pages/1.html",
+									// true);
                                     request.open('GET', use_url, true);
-                                    // request.overrideMimeType('text\/plain; charset=x-user-defined');
+                                    // request.overrideMimeType('text\/plain;
+									// charset=x-user-defined');
                                     request.responseType = 'blob';
 
                                     request.onload = function () {
                                         var reader = new FileReader();
                                         reader.readAsDataURL(request.response);
                                         reader.onload = function (e) {
-                                            console.log('DataURL:', e.target.result);
+                                            console.debug('DataURL:', e.target.result);
                                             file_base64_ed = e.target.result.replace(/^([^,]*),/, '');
                                         };
                                     };
                                     request.send();
-                                    console.log("received data: " + file_base64_ed);
+                                    console.debug("received data: " + file_base64_ed);
 
                                     var request = new XMLHttpRequest();
-                                    //request.open('GET', "file:///C:/glovebox-dev/test_pages/1.html", true);
+                                    // request.open('GET',
+									// "file:///C:/glovebox-dev/test_pages/1.html",
+									// true);
                                     request.open('GET', use_url, true);
-                                    // request.overrideMimeType('text\/plain; charset=x-user-defined');
+                                    // request.overrideMimeType('text\/plain;
+									// charset=x-user-defined');
                                     request.responseType = 'blob';
 
                                     var file_base64_ed2 = "";
@@ -797,55 +831,60 @@ function getSelectedHTML(request, sender, sendResponse) {
                                         var reader2 = new FileReader();
                                         reader2.readAsDataURL(request2.response);
                                         reader2.onload = function (e) {
-                                            console.log('DataURL:', e.target.result);
+                                            console.debug('DataURL:', e.target.result);
                                             file_base64_ed2 = e.target.result.replace(/^([^,]*),/, '');
                                         };
                                     };
                                     request2.send();
-                                    console.log("received data: " + file_base64_ed2);
+                                    console.debug("received data: " + file_base64_ed2);
 
                                     var oReq = new XMLHttpRequest();
                                     var byteArray;
                                     oReq.open('GET', use_url, true);
                                     oReq.responseType = 'arraybuffer';
                                     oReq.onload = function (oEvent) {
-                                        var arrayBuffer = oReq.response; // Note: not oReq.responseText
-                                        console.log("received data: " + arrayBuffer);
+                                        var arrayBuffer = oReq.response; // Note:
+																			// not
+																			// oReq.responseText
+                                        console.debug("received data: " + arrayBuffer);
                                         if (arrayBuffer) {
                                             byteArray = new Uint8Array(arrayBuffer);
-                                            console.log("received data: " + byteArray);
+                                            console.debug("received data: " + byteArray);
                                             for (var i = 0; i < byteArray.byteLength; i++) {
-                                                // do something with each byte in the array
+                                                // do something with each byte
+												// in the array
                                             }
                                         }
                                     };
 
                                     oReq.send(null);
 
-                                    console.log("received data: " + byteArray);
+                                    console.debug("received data: " + byteArray);
 
                                 }
-                                // by this point, relevant parameters of the request object have been set, depending on the protocol.
+                                // by this point, relevant parameters of the
+								// request object have been set, depending on
+								// the protocol.
 
 
-                                console.log("1.2.3");
+                                console.debug("1.2.3");
 
-                                //   request22({
-                                //       url: uri
-                                //   })
-                                //   .then(function (resp) {
-                                //        console.log(resp);
-                                //    });
+                                // request22({
+                                // url: uri
+                                // })
+                                // .then(function (resp) {
+                                // console.debug(resp);
+                                // });
 
 
                                 const sleep = ms => {
                                     return new Promise(resolve => setTimeout(resolve, ms))
                                 }
                                 // Using Sleep
-                                console.log('Now')
+                                console.debug('Now')
                                 sleep(3000)
                                 .then(v => {
-                                    console.log('After three seconds')
+                                    console.debug('After three seconds')
                                 })
 
                                 const getOne = _ => {
@@ -862,119 +901,124 @@ function getSelectedHTML(request, sender, sendResponse) {
 
                                 const getThree = _ => {
                                     return sleep(1000).then(function () {
-                                        console.log("get six");
+                                        console.debug("get six");
                                         return getSix();
                                     }).then(v => 5)
                                 }
 
                                 const getImg = _ => {
                                     return getBlob(uri, j, elem).then(function (v) {
-                                        //  console.log(v);
-                                        console.log(elem);
+                                        // console.debug(v);
+                                        console.debug(elem);
                                         // insert
                                         elem.setAttribute('test4', 'value4');
                                         elem.setAttribute('src4', v);
 
-                                        console.log(elem);
+                                        console.debug(elem);
                                         return 7
                                     })
                                 }
 
                                 const test = async _ => {
-                                    const one = await getOne()
-                                        console.log(one)
+                                    const one = await getOne();
+                                        console.debug(one)
 
-                                        const two = await getTwo()
-                                        console.log(two)
+                                        const two = await getTwo();
+                                        console.debug(two)
                                         const four = await getImg();
 
-                                    const three = await getThree()
-                                        console.log(three)
-                                        console.log(two)
-                                        console.log(two)
-                                        console.log(four)
+                                    const three = await getThree();
+                                        console.debug(three);
+                                        console.debug(two);
+                                        console.debug(two);
+                                        console.debug(four);
 
-                                        console.log('Done')
+                                        console.debug('Done');
                                 }
 
-                                //test()
+                                // test()
 
 
                                 j++;
 
                             } catch (e) {
-                                console.log(e);
+                                console.debug(e);
                             }
 
                             // prepare statement that retrieves
                             const getSrc = _ => {
                                 return getBlob(uri, j, elem).then(function (v) {
-                                    //  console.log(v);
-                                    console.log(elem);
+                                    // console.debug(v);
+                                    console.debug(elem);
                                     // insert
                                     elem.setAttribute('test4', 'value4');
                                     elem.setAttribute('src4', v);
 
-                                    console.log(elem);
+                                    console.debug(elem);
                                     return 7
                                 })
                             }
-                            console.log("##### 1.1.1 ");
+                            console.debug("##### 1.1.1 ");
 
-                            console.log(url_promises);
+                            console.debug(url_promises);
                             // add the URL to a queue
                             url_promises.push(getSrc);
-                            console.log(url_promises);
+                            console.debug(url_promises);
 
                             // make call for each URL found
                             // iterate through all object in the array,
-                            //and for each call a function with two inputs: the current array element(p) and the remainder of the array (subarray)
-                            // the array entry is a promise (returned from the loadBlod function) and it is executed by calling ".then" on it.
+                            // and for each call a function with two inputs: the
+							// current array element(p) and the remainder of the
+							// array (subarray)
+                            // the array entry is a promise (returned from the
+							// loadBlod function) and it is executed by calling
+							// ".then" on it.
 
 
                         }
 
-                        //   console.log("############## 2.1.1 ");
-                        //   const test2 = async _ => {
-                        //   	console.log("2.1.2 ");
-                        //   const fou = await url_promises[0]();
-                        //   }
-                        //test2();
-                        console.log("############## 2.1.2 ");
-                        console.log(elements);
-                        console.log(container.innerHTML);
-                        // this for-loop executes the promises that have been added to the array url_promises.
+                        // console.debug("############## 2.1.1 ");
+                        // const test2 = async _ => {
+                        // console.debug("2.1.2 ");
+                        // const fou = await url_promises[0]();
+                        // }
+                        // test2();
+                        console.debug("############## 2.1.2 ");
+                        console.debug(elements);
+                        console.debug(container.innerHTML);
+                        // this for-loop executes the promises that have been
+						// added to the array url_promises.
 
 
                         const forLoop = async _ => {
-                            console.log('Start')
+                            console.debug('Start')
 
                             for (let index = 0; index < url_promises.length; index++) {
                                 const fruit = url_promises[index]
 
-                                    //const numFruit = await getNumFruit(fruit)
-                                    console.log("############## 2.1.4 ");
+                                    // const numFruit = await getNumFruit(fruit)
+                                    console.debug("############## 2.1.4 ");
                                 const numFruit = await fruit();
 
-                                console.log("############## 2.1.5 ");
-                                console.log(container.innerHTML);
-                                console.log(numFruit)
+                                console.debug("############## 2.1.5 ");
+                                console.debug(container.innerHTML);
+                                console.debug(numFruit)
                             }
 
-                            console.log('End')
+                            console.debug('End')
 
                         }
-                        console.log("############## 2.1.3 ");
+                        console.debug("############## 2.1.3 ");
                         forLoop().then(function () {
-                            console.log("promises forloop completed");
+                            console.debug("promises forloop completed");
 
                             // return at this point.
 
                             selection_html = container.innerHTML;
                             var compacted_data = packUpContent(selection_html);
-                            //  console.log("return: " + compacted_data);
-                            console.log("return size selected: " + selection_html.length);
-                            console.log("return size compacted: " + compacted_data.length);
+                            // console.debug("return: " + compacted_data);
+                            console.debug("return size selected: " + selection_html.length);
+                            console.debug("return size compacted: " + compacted_data.length);
 
                             // return calls in a final "then"
                             setTimeout(() => {
@@ -985,43 +1029,48 @@ function getSelectedHTML(request, sender, sendResponse) {
                                 });
                             }, 3000);
 
-                            //    resolve({
-                            //        sendResponse: {
-                            //           "doc": selection_html
-                            //       }
-                            //   });
+                            // resolve({
+                            // sendResponse: {
+                            // "doc": selection_html
+                            // }
+                            // });
 
 
                         });
 
-                        console.log("############## 2.1.6 ");
+                        console.debug("############## 2.1.6 ");
 
-                        console.log(elements);
-                        console.log(container.innerHTML);
-                        // At the decrypt time, the content can't be returned to those URLs(obviously) but will rather be placed inline.
+                        console.debug(elements);
+                        console.debug(container.innerHTML);
+                        // At the decrypt time, the content can't be returned to
+						// those URLs(obviously) but will rather be placed
+						// inline.
 
                         selection_html = container.innerHTML;
-                        console.log("selection_html(modified): " + selection_html);
+                        console.debug("selection_html(modified): " + selection_html);
 
                     } else if (contenttype == "linked") {
-                    	// Do everything same as in embedded but also 
+                    	// Do everything same as in embedded but also
                         // gather up all linked content
                         // // follow href-liks and place the content in
 
 
-                        // This section is for following URLs and taking in the content at the end of those URLs
+                        // This section is for following URLs and taking in the
+						// content at the end of those URLs
 
 
-                        // At the decrypt time, the content can't be returned to those URLs(obviously) but will rather be placed inline.
+                        // At the decrypt time, the content can't be returned to
+						// those URLs(obviously) but will rather be placed
+						// inline.
 
                     } else {
                         // just get the displayed text
-                        //selection_html = window.getSelection();
+                        // selection_html = window.getSelection();
 
                         selection_html = container.textContent;
                     }
 
-                    console.log("1.2.2");
+                    console.debug("1.2.2");
                 }
             } else if (typeof document.selection != "undefined") {
                 if (document.selection.type == "Text") {
@@ -1031,23 +1080,23 @@ function getSelectedHTML(request, sender, sendResponse) {
 
             // remove the listener created initially
             try {
-                console.log("remove listener");
+                console.debug("remove listener");
                 browser.runtime.onMessage.removeListener(getSelectedHTML);
             } catch (e) {
-                console.log(e);
+                console.debug(e);
             }
         } else {
-            console.log("invalid request");
-            //reject("invalid request");
+            console.debug("invalid request");
+            // reject("invalid request");
             return false;
         }
 
     } catch (e) {
-        console.log(e);
+        console.debug(e);
     }
     return true;
 
 }
 
 browser.runtime.onMessage.addListener(getSelectedHTML);
-//browser.runtime.onMessage.addListener(getSelHtm);
+// browser.runtime.onMessage.addListener(getSelHtm);
