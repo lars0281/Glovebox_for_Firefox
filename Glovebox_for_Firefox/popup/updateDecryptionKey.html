@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" href="updateDecryptionKey.css">
+
+<title>update Decryption Key</title>
+</head>
+<body>
+Hello, <b> text </b>
+make any changes required<form class="update-decryption-key">\n';
+
+<br/>username<input name="username" id="username" type="text" value="' + obj.username + '"></input>
+<br/>uuid<input name="uuid" id="uuid" type="text" value="' + obj.keyId + '"></input>
+<br/>key type<input name="keyObjectType" id="keyObjectType" type="text" value="' + obj.keyObjectType + '"></input>
+<br/>key<input name="key" type="text" id="key" value="' + obj.key + '"></input>
+
+<br/>jwk<textarea  name="jwk" type="textarea" id="jwk" rows="4"cols="50">' + JSON.stringify(obj.jwk) + '</textarea >
+
+<br/><input name="update-decryption-key" type="submit" id="update-decryption-key-button" class="update-decryption-key" value="submit updates"></input>
+
+</form>
+
+  
+        
+        <script src="/popup/updateDecryptionKey.js"></script>
+</body>
+</html>

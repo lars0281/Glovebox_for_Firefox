@@ -47,7 +47,7 @@ function update_encryption_key() {
 
     console.log('data to be saved' + newItem);
 
-    utils_functions.saveToIndexedDB('encryptionKeysDB', 'encryptionKeysStore', 'keyId', newItem).then(function (response) {
+    utils_functions.saveToIndexedDB('encryptionKeys', 'encryptionKeys', 'keyId', newItem).then(function (response) {
         console.log('data saved');
     }).catch(function (error) {
         console.log(error.message);

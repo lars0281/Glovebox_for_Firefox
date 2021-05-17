@@ -129,10 +129,13 @@ browser.contextMenus.create({
     contexts: ["image"],
 });
 
+
+// for access to admin page
 browser.browserAction.onClicked.addListener(() => {
     // use this functionality to get a full tabpage
+	console.debug("browser.browserAction.onClicked.addListener");
     browser.tabs.create({
-        url: "/navigate-collection.html"
+        url: "./navigate-collection.html"
     });
     // can replace the above with a direct referal to this html in the manifest
     // - but this would not provide a full tab-page
@@ -1962,43 +1965,7 @@ function consume_GloveboxSecureKeyOfferToken() {
     // RemoveTabOnMessageListenerPasteGloveboxAcceptedSecureKeyOfferToken
 }
 
-async function sign_async(privateKeyObj, message) {
 
-    const data = new TextEncoder().encode(message);
-
-    const signature = await window.crypto.subtle.sign({
-            name: "RSASSA-PKCS1-v1_5",
-        },
-            privateKeyObj,
-            data, );
-
-    // converts the signature to a colon seperated string
-    return new Uint8Array(signature).join(':');
-
-}
-
-// hash: sha-512, sha-256 , sha-1 (free version)
-/* modulus length: 4096, 2048 , 1024 (free version)*/
-
-async function sign(privateKeyJwk, message) {
-    // console.debug('sign');
-    // console.debug(privateKeyJwk);
-    // console.debug(message);
-    const privateKey = await window.crypto.subtle.importKey('jwk', privateKeyJwk, {
-            name: "RSASSA-PKCS1-v1_5",
-            hash: {
-                name: "SHA-1"
-            },
-        }, false, ['sign']);
-    const data = new TextEncoder().encode(message);
-    const signature = await window.crypto.subtle.sign({
-            name: "RSASSA-PKCS1-v1_5",
-        },
-            privateKey,
-            data, );
-    // converts the signature to a colon seperated string
-    return new Uint8Array(signature).join(':');
-}
 
 // Return the uuid referencing the key required to decrypt the glovebox text
 // takes a de-obfuscated token as input
@@ -4424,6 +4391,33 @@ function saveToIndexedDB_async(dbName, storeName, keyId, object) {
     });
     
 }
+
+
+
+//hash: sha-512, sha-256 , sha-1 (free version)
+/* modulus length: 4096, 2048 , 1024 (free version)*/
+
+function DISABLEsign_async(privateKeyJwk, message) {
+// console.debug('sign');
+// console.debug(privateKeyJwk);
+// console.debug(message);
+const privateKey =  window.crypto.subtle.importKey('jwk', privateKeyJwk, {
+       name: "RSASSA-PKCS1-v1_5",
+       hash: {
+           name: "SHA-1"
+       },
+   }, false, ['sign']);
+const data = new TextEncoder().encode(message);
+const signature =  window.crypto.subtle.sign({
+       name: "RSASSA-PKCS1-v1_5",
+   },
+       privateKey,
+       data, );
+// converts the signature to a colon seperated string
+return new Uint8Array(signature).join(':');
+}
+
+
 
 async function saveToIndexedDB(dbName, storeName, id, object) {
     console.debug("saveToIndexedDB(" + dbName + "," + storeName + "," + id + ", ...): begin");

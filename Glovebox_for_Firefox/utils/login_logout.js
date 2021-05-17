@@ -1,6 +1,35 @@
 
 export { login_and_keep_all_keys, logout_and_backout_all_keys};
 
+import {
+	loadFromIndexedDB_async,
+    saveToIndexedDB_async,
+    deleteFromIndexedDB_async,
+    READ_DB_async,
+    dump_db
+}
+from "./glovebox_db_ops.js"
+
+import {
+    createTableRow,
+    writeTableHeaderRow,
+    writeTableRow,
+    sortColumn,
+    SortTable,
+    CompareRowOfText,
+    CompareRowOfNumbers,
+    GetDateSortingKey,
+    writeTableCell,
+    TableLastSortedColumn,
+    reflow,
+    
+    
+    download_file,convertArrayBufferViewtoString,
+    convertStringToArrayBufferView,arrayBufferToString,arrayBufferToBase64,stringToArrayBuffer
+
+}
+from "./glovebox_utils.js"
+
 
 function login_and_keep_all_keys() {
     console.debug("### login_and_keep_all_keys() BEGIN");
@@ -45,9 +74,8 @@ function logout_and_backout_all_keys() {
                 var storeName3 = parentArray[i][2];
                 console.debug("### accessing db:" + db + " dbname:" + dbName3 + " storeName:" + storeName3);
 
-                const one = await READ_DB(db, dbName3, storeName3);
-                console.debug("READ " + one);
-
+                READ_DB_async(db, dbName3, storeName3).then(function(one){console.debug(one); });
+                
                 //	console.debug("# appending: " +parentArray[i][0] + "   " + one);
                 //    console.debug("#-#-#-#-# " + i + " " + listOfKeys);
 
@@ -80,31 +108,44 @@ function logout_and_backout_all_keys() {
     //crypto functions are wrapped in promises so we have to use await and make sure the function that
     //contains this code is an async function
     //encrypt function wants a cryptokey object
-    const key_encoded = await crypto.subtle.importKey("raw", key.buffer, 'AES-CTR', false, ["encrypt", "decrypt"]);
-  
-    const encrypted_content = await window.crypto.subtle.encrypt({
+   
+    
+    crypto.subtle.importKey("raw", key.buffer, 'AES-CTR', false, ["encrypt", "decrypt"]).then(function(key_encoded){
+    	
+    	return window.crypto.subtle.encrypt({
             name: "AES-CTR",
             counter: iv,
             length: 128
         },
             key_encoded,
             encoded);
+    }).then(function(encrypted_content){
+    	//Uint8Array
+        console.debug(encrypted_content);
+        
+        return download_file("glovebox_keys_backup.json", listOfKeys);
+    }).then(function(res){
+    	console.debug(res);
 
-    //Uint8Array
-    console.debug(encrypted_content);
-
-    download_file("glovebox_keys_backup.json", listOfKeys).then(function(res){console.debug(res)});
-
-    console.debug("### logout_and_backup_all_keys() end");
-    // resolve( "true");
-    console.debug("backup completed, proceed to flush all keys.");
-    // empty out all databases
-     flush_all_dbs().then(function(res){console.debug(res)});
+        console.debug("### logout_and_backup_all_keys() end");
+        // resolve( "true");
+        console.debug("backup completed, proceed to flush all keys.");
+        // empty out all databases
+         flush_all_dbs().then(function(res){console.debug(res)});
 
 
-    // search all open tabs for decrypted content
-    // Ordinarily when content is decrypted, the encrypted data is hidden and the decrypted content is show in its place.
-    // This "doubling up" is put in place to facilitate a rapid logout: where there is no need to re-enrypt, but simply delete all decrypted data and return to showing the original, encrypted data
+        // search all open tabs for decrypted content
+        // Ordinarily when content is decrypted, the encrypted data is hidden and the decrypted content is show in its place.
+        // This "doubling up" is put in place to facilitate a rapid logout: where there is no need to re-enrypt, but simply delete all decrypted data and return to showing the original, encrypted data
+
+    });
+  
+    
+    
+    
+
+    
+
 
 
     //   });
