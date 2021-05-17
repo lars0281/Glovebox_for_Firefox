@@ -14,11 +14,12 @@ export {
 import {
     loadFromIndexedDB_async,
     saveToIndexedDB_async,
-    deleteFromIndexedDB_async
+    deleteFromIndexedDB_async,
+    READ_DB_async
 }
 from "./glovebox_db_ops.js"
 
-async function import_all_keys(json_all_records) {
+function import_all_keys(json_all_records) {
     console.debug("navigate-collection.js: import_all_keys" + json_all_records);
 
     var obj_all_records = JSON.parse(json_all_records);
@@ -60,7 +61,7 @@ async function import_all_keys(json_all_records) {
 
             k++;
             // write to database
-            var rc = await saveToIndexedDB_async(db, storeName3, obj.uuid, obj);
+            saveToIndexedDB_async(db, storeName3, obj.uuid, obj).then(function(rc){console.debug(rc);});
 
         }
 
@@ -75,7 +76,7 @@ async function import_all_keys(json_all_records) {
 
 }
 
-async function backout_all_keys(backupFilePwd) {
+function backout_all_keys(backupFilePwd) {
     console.debug("### backup_all_keys(backupFilePwd) begin");
 
     //  return new Promise((resolve, reject) => {
@@ -109,14 +110,16 @@ async function backout_all_keys(backupFilePwd) {
                 var storeName3 = parentArray[i][2];
                 console.debug("### accessing db:" + db + " dbname:" + dbName3 + " storeName:" + storeName3);
 
-                const one = await READ_DB(db, dbName3, storeName3);
-                console.debug("READ " + one);
+                READ_DB_async(db, dbName3, storeName3).then(function(one){
+                    console.debug("READ " + one);
 
-                //	console.debug("# appending: " +parentArray[i][0] + "   " + one);
-                //    console.debug("#-#-#-#-# " + i + " " + listOfKeys);
+                    //	console.debug("# appending: " +parentArray[i][0] + "   " + one);
+                    //    console.debug("#-#-#-#-# " + i + " " + listOfKeys);
 
-                listOfKeys = listOfKeys + '"' + parentArray[i][0] + '":' + one + ',';
-                console.debug("#-#-#-#-# (accumulating) " + i + " " + listOfKeys);
+                    listOfKeys = listOfKeys + '"' + parentArray[i][0] + '":' + one + ',';
+                    console.debug("#-#-#-#-# (accumulating) " + i + " " + listOfKeys);
+                	
+                });
 
             } catch (e) {
                 console.debug("ERROR");
@@ -144,7 +147,7 @@ async function backout_all_keys(backupFilePwd) {
 
     console.debug("#-#-#-#-# encrypted (base64) " + Base64.stringify(encryptedString));
 
-    await download_file("glovebox_keys_backup.json", Base64.stringify(encryptedString));
+    download_file("glovebox_keys_backup.json", Base64.stringify(encryptedString));
 
     //download_file("glovebox_keys_backup.txt", listOfKeys, "text/plain");
     console.debug("### backup_all_keys() end");

@@ -5,8 +5,8 @@
 	"homepage_url": "https://github.com/lars0281/Glovebox_for_Firefox",
 	"version": "0.8",
 	"icons": {
-		"48": "icons/beasts-48.png",
-		"96": "icons/beasts-48.png"
+		"48": "icons/glovebox-48.png",
+		"96": "icons/glovebox-96.png"
 	},
 	"browser_specific_settings": {
         "gecko": {
@@ -24,15 +24,15 @@
 		]
 	},
 	"browser_action": {
-		"default_icon": "icons/oie_24182624GhAKibDr.jpg",
+		"default_icon": "icons/glovebox-96.png",
 		"theme_icons": [
 			{
-				"light": "icons/oie_24182624GhAKibDr.jpg",
-				"dark": "icons/beasts-32.png",
+				"light": "icons/glovebox-32.png",
+				"dark": "icons/glovebox-32.png",
 				"size": 32
 			}
 		],
-		"default_title": "Glovebox keys"
+		"default_title": "Glovebox"
 	},
 	"content_scripts": [
 		{

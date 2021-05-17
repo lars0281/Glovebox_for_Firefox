@@ -54,13 +54,12 @@ import {
     writeTableCell,
     TableLastSortedColumn,
     reflow,
-    READ_DB,
-    
     download_file,convertArrayBufferViewtoString,
     convertStringToArrayBufferView,arrayBufferToString,arrayBufferToBase64,stringToArrayBuffer
 
 }
 from "./utils/glovebox_utils.js"
+
 
 import {
 	get_default_signing_key_async,generate_privatepublickey_for_signing_async,updateDecryptionKey, updateEncryptionKey, generate_new_RSA_sign_and_encr_keypairs, makeDefaultPrivateKey, makeDefaultEncryptionKey
@@ -72,6 +71,7 @@ import {
 	loadFromIndexedDB_async,
     saveToIndexedDB_async,
     deleteFromIndexedDB_async,
+    READ_DB_async,
     dump_db
 }
 from "./utils/glovebox_db_ops.js"
@@ -160,7 +160,6 @@ class NavigateCollectionUI {
 
         // test imports, encrypt
         var key = "ZxlNEnojO5HbQngiYvrqu32Br6V";
-
         var password = "password";
         var data = "narayan prusty";
         var key = null;
@@ -3950,26 +3949,7 @@ function DISABLEdecrypt_data() {
     });
 }
 
-function DISPLAY_arrayBufferToBase64(buffer) {
-    var binary = '';
-    var bytes = new Uint8Array(buffer);
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-}
 
-function DISPLAY_base64ToArrayBuffer(base64) {
-    var binary_string = window.atob(base64);
-    var len = binary_string.length;
-    var bytes = new Uint8Array(len);
-    const buffer = new ArrayBuffer(8);
-    for (var i = 0; i < len; i++) {
-        bytes[i] = binary_string.charCodeAt(i);
-    }
-    return bytes.buffer;
-}
 
 
 // eslint-disable-next-line no-unused-vars

@@ -1,4 +1,4 @@
-export {arrayBufferToBase64, arrayBufferToString,stringToArrayBuffer,convertArrayBufferViewtoString,convertStringToArrayBufferView,download_file , SHA1, base64ToArrayBuffer, createTable, createTableRow , writeTableHeaderRow, writeTableRow, sortColumn, SortTable, CompareRowOfText, CompareRowOfNumbers, GetDateSortingKey, writeTableNode, writeTableCell, TableLastSortedColumn, reflow  , READ_DB};
+export {arrayBufferToBase64, arrayBufferToString,	stringToArrayBuffer,	convertArrayBufferViewtoString,	convertStringToArrayBufferView,	download_file , 	SHA1, 	base64ToArrayBuffer, 	createTable, 	createTableRow , 	writeTableHeaderRow, 	writeTableRow, 	sortColumn, 	SortTable, 	CompareRowOfText, 	CompareRowOfNumbers, 	GetDateSortingKey, 	writeTableNode, 	writeTableCell, 	TableLastSortedColumn, 	reflow };
 
 
 
@@ -659,59 +659,6 @@ function reflow(elt) {
     console.debug(elt.offsetHeight);
 }
 
-
-
-
-function READ_DB(db, dbName3, storeName3) {
-
-    return new Promise((resolve, reject) => {
-
-        try {
-            var one;
-
-            console.debug("reading db:" + db + " dbname:" + dbName3 + " storeName:" + storeName3);
-            var dbRequest = indexedDB.open(db);
-
-            dbRequest.onerror = function () {
-                console.debug("Error", dbRequest.error);
-                console.error("Error", dbRequest.error);
-            };
-            dbRequest.onupgradeneeded = function () {
-                console.debug("onupgradeneeded ");
-                console.error("onupgradeneeded ");
-            };
-
-            dbRequest.onsuccess = function (event3) {
-                console.debug("one " + one);
-                console.debug("db:" + db + " dbname:" + dbName3 + " storeName:" + storeName3);
-                var database3 = event3.target.result;
-                console.debug("2");
-                // open database on read-only mode
-                var transaction3 = database3.transaction([storeName3], 'readonly');
-                var objectStore3 = transaction3.objectStore(storeName3);
-                console.debug("3");
-                var allRecords3 = objectStore3.getAll();
-                console.debug("4");
-                allRecords3.onsuccess = function () {
-                    const res3 = allRecords3.result;
-                    // get private(and their public component) signing keys
-                    database3.close();
-                    one = JSON.stringify(res3);
-                    console.debug("returning from database: " + one);
-                    resolve(one);
-                };
-                database3.close();
-            }
-
-        } catch (e) {
-            console.debug(e);
-            reject();
-        }
-
-    });
-
-    // return one;
-}
 
 
 

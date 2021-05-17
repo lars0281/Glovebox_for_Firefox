@@ -1,7 +1,8 @@
 
 export {
     aes_encrypt,
-    encryptData
+    encryptData,
+    sign_async
 };
 
 import {
@@ -16,7 +17,6 @@ import {
     writeTableCell,
     TableLastSortedColumn,
     reflow,
-    READ_DB,
     download_file,
     convertArrayBufferViewtoString,
     convertStringToArrayBufferView,
@@ -32,7 +32,8 @@ from "./glovebox_utils.js"
 import {
 	loadFromIndexedDB_async,
     saveToIndexedDB_async,
-    deleteFromIndexedDB_async
+    deleteFromIndexedDB_async,
+    READ_DB_async
 }
 from "./glovebox_db_ops.js"
 
@@ -172,4 +173,47 @@ function aes_encrypt(passphrase, cleartext) {
     	console.error(e);
     }
 }
+
+
+//hash: sha-512, sha-256 , sha-1 (free version)
+/* modulus length: 4096, 2048 , 1024 (free version)*/
+
+ function sign_async(privateKeyJwk, message) {
+ // console.debug('sign');
+ // console.debug(privateKeyJwk);
+ // console.debug(message);
+	 
+	  return new Promise(
+		        function (resolve, reject) {
+	 const data = new TextEncoder().encode(message);
+	 
+	 
+	 window.crypto.subtle.importKey('jwk', privateKeyJwk, {
+         name: "RSASSA-PKCS1-v1_5",
+         hash: {
+             name: "SHA-1"
+         },
+     }, false, ['sign']).then(function(privateKey){
+    	 
+    	 return window.crypto.subtle.sign({
+             name: "RSASSA-PKCS1-v1_5",
+         },
+             privateKey,
+             data );
+    	 
+     }).then(function(privateKey){
+    	 
+    	 return window.crypto.subtle.sign({
+             name: "RSASSA-PKCS1-v1_5",
+         },
+             privateKey,
+             data );
+    	 
+     }).then(function(signature){
+
+    	 resolve(new Uint8Array(signature).join(':'));
+     });
+		        });
+}
+
 
